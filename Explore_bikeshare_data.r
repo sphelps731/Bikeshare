@@ -20,13 +20,19 @@ names(ny)
 # Your solution code goes here
 
 qplot(x = Trip.Duration, data = subset(ny, !is.na(Gender)),
-      binwidth = 20) +
-    scale_x_continuous(lim = c(0, 1000), breaks = seq(0, 1000, 250))+
+    xlab = "Trip Duration", ylab = "Number of Riders",    
+    color = I('black'), fill = I('#099002'), binwidth = 40) +
+    scale_x_continuous(lim = c(0, 1000), breaks = seq(0, 1000, 1250)) +
     facet_wrap(~Gender)
 
 
 table(ny$Gender)
 by(ny$Trip.Duration, ny$Gender, summary)
+
+#creating the boxplot
+qplot(x = Gender, y = Trip.Duration, data = subset(ny, !is.na(Gender), , 
+     geom = 'boxplot') +
+    coord_cartesian(ylim = c(0, 5000))
 
 # Your solution code goes here
 
