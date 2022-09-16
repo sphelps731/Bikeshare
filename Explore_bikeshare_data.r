@@ -8,10 +8,6 @@ head(ny)
 summary(ny)
 
 
-# head(wash)
-
-# head(chi)
-
 dim(ny)
 
 library('ggplot2')
@@ -30,11 +26,25 @@ table(ny$Gender)
 by(ny$Trip.Duration, ny$Gender, summary)
 
 #creating the boxplot
-qplot(x = Gender, y = Trip.Duration, data = subset(ny, !is.na(Gender), , 
+qplot(x = Gender, y = Trip.Duration, data = subset(ny, !is.na(Gender)),
      geom = 'boxplot') +
-    coord_cartesian(ylim = c(0, 5000))
+    coord_cartesian(ylim = c(0, 2500))
+
+by(ny$Trip.Duration, ny$Gender, summary)
+
+head(chi)
+
+summary(chi)
+
+library('ggplot2')
+names(chi)
 
 # Your solution code goes here
+qplot(x = Trip.Duration, data = subset(chi, !is.na(Birth.Year)),
+    xlab = "Trip Duration", ylab = "Number of Riders",    
+    color = I('black'), fill = I('#099002'), binwidth = 40) +
+    scale_x_continuous(lim = c(0, 1000), breaks = seq(0, 1000, 1250)) +
+    facet_wrap(~Birth.Year)
 
 
 # Your solution code goes here
