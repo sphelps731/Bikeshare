@@ -39,10 +39,17 @@ summary(chi)
 library('ggplot2')
 names(chi)
 
+
+library(dplyr)
+filter(chi, Birth.Year > 1950)
+
 # Your solution code goes here
 
 
-filter(chi, Birth.Year > 1950)
+save(chi, file = 'chi_filtered.csv')
+
+chi_f = read.csv(file = 'chi_filtered.csv')
+
 
 # qplot(x = Trip.Duration, data = subset(chi, !is.na(Birth.Year)),
 #     xlab = "Trip Duration", ylab = "Number of Riders",    
