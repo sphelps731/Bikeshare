@@ -45,10 +45,9 @@ filter(chi, Birth.Year > 1950)
 
 # Your solution code goes here
 
-
-# save(chi, file = 'chi_filtered.csv')
-
-chi_f = read.csv(file = 'chi_filtered.csv')
+save(chi, file = 'chi_filtered.csv')
+chi_f = read.csv('chi_filtered.csv')
+head(chi_f)
 
 
 # qplot(x = Trip.Duration, data = subset(chi, !is.na(Birth.Year)),
@@ -56,7 +55,11 @@ chi_f = read.csv(file = 'chi_filtered.csv')
 #     color = I('black'), fill = I('#099002'), binwidth = 40) +
 #     scale_x_continuous(lim = c(0, 1000), breaks = seq(0, 1000, 1250)) +
 #     facet_wrap(~Birth.Year)
-chi_f
+
+
+# head(chi_f)
+names(chi_f)
+summary(chi_f)
 
 # Your solution code goes here
 
