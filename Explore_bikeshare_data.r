@@ -154,25 +154,16 @@ head(end_stat_sum)
 # head(end_stat_sum)
 
 
-wash_es <- popular_stations(wash$End.Station, 10)
- 
-
-def popular_stations(for i in wash_es, 10) {
+popular_stations <- function(n, y) {   # n = dataframe name
     
-    wash[order(wash_es)]
+    for x in n$End.Station {
+         
+        n[order(n$End.Station)]
         
+    }
     
-     return wash_es
-         
-}
-         
-     
-    
-   
-    
+} 
 
-
-
-
+popular_stations(ny, 10) 
 
 system('python -m nbconvert Explore_bikeshare_data.ipynb')
