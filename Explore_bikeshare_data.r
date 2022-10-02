@@ -34,7 +34,7 @@ qplot(x = Trip.Duration, data = subset(ny, !is.na(Gender)), # omitting NA values
     xlab = "Trip Duration By Gender - New York", ylab = "Number of Riders",    
     main = "Trip Durations For Males and Females - New York",
     color = I('black'), fill = I('#099002'), binwidth = 40) +
-    scale_x_continuous(breaks = seq(0, 50, 2500), lim = c(0, 2500)) +
+    scale_x_continuous(breaks = seq(0, 2500, 500), lim = c(0, 2500)) +
     facet_wrap(~Gender)
 
 
@@ -59,7 +59,7 @@ qplot(x = Trip.Duration, data = subset(chi, !is.na(Gender)), # omitting NA value
     xlab = "Trip Duration By Gender - Chicago", ylab = "Number of Riders",    
     main = "Trip Durations For Males and Females - Chicago",
     color = I('black'), fill = I('5938879'), binwidth = 40) +
-    scale_x_continuous(breaks = seq(0, 50, 2500), lim = c(0, 2500)) +
+    scale_x_continuous(breaks = seq(0, 2500, 500), lim = c(0, 2500)) +
     facet_wrap(~Gender)
 
 
@@ -80,7 +80,7 @@ qplot(x = Trip.Duration, data = wash,
     xlab = "Trip Duration - Washington", ylab = "Number of Riders",    
     main = "Trip Durations For Riders in Washington",
     color = I('black'), fill = I('#199434'), binwidth =20) +
-    scale_x_continuous(breaks = seq(0, 50, 2500), lim = c(0, 2500)) 
+    scale_x_continuous(breaks = seq(0, 2500, 500), lim = c(0, 2500)) 
     
 
 names(chi)
@@ -154,16 +154,18 @@ head(end_stat_sum)
 # head(end_stat_sum)
 
 
-popular_stations <- function(n, y) {   # n = dataframe name
+#function that return
+popular_stations <- function(df) { 
     
-    for x in n$End.Station {
-         
-        n[order(n$End.Station)]
-        
-    }
-    
-} 
+    df <- transform(df, freq= ave(seq(nrow(df)), End.Station, FUN=length))      
 
-popular_stations(ny, 10) 
+#     df[order(-df$freq),]
+    
+    sort(unique(df$freq), decreasing = TRUE)
+
+}
+
+
+popular_stations(chi) 
 
 system('python -m nbconvert Explore_bikeshare_data.ipynb')
