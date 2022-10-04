@@ -143,7 +143,9 @@ x = summary(wash$End.Station)
 
 # dim(end_stat_sum)
 
-head(end_stat_sum)
+library(dplyr)
+
+# head(end_stat_sum)
 
 # substr(end_stat_sum$Station, 1, 4)
 
@@ -154,24 +156,16 @@ head(end_stat_sum)
 # head(end_stat_sum)
 
 
-#function that returns most popular end stations
+#function that returns most visited end stations
 popular_stations <- function(df) { 
     
     df <- transform(df, freq= ave(seq(nrow(df)), End.Station, FUN=length))      
-
-    df[order(-df$freq),]
     
-    Result <- sort(unique(df$freq), decreasing = TRUE)
-    EndStation <- head(df$End.Station, 10)  #c(df$End.Station)
+    data <- sort(unique(df$freq), decreasing = TRUE)
     
-#     new_df <- data.frame(EndStation, Result)
-#     
-    
-       
-#     return(df_new)
-    print(EndStation)
+    data
 }
-
+   
 
 popular_stations(chi) 
 
