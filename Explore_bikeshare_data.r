@@ -161,12 +161,17 @@ popular_stations <- function(df) {
     
     df <- transform(df, freq= ave(seq(nrow(df)), End.Station, FUN=length))      
     
-    data <- sort(unique(df$freq), decreasing = TRUE)
-    
-    data
-}
-   
+    df_new = data.frame(df$End.Station, df$freq)
 
-popular_stations(chi) 
+    df_grp <- df_new %>% group_by(df$End.Station)     
+    
+    df_grp = df_grp[order(-df_grp$df.freq), ]
+
+    df_top_ten = unique(df_grp, decreasing = TRUE)
+    
+    head(df_top_ten, 10)
+}
+
+popular_stations(ny) 
 
 system('python -m nbconvert Explore_bikeshare_data.ipynb')
