@@ -6,9 +6,9 @@ wash = read.csv('washington.csv')
 chi = read.csv('chicago.csv')
 
 # Reviewing the top five rows for NY and Chicago
-
 head(ny, 5)
 head(chi, 5)
+
 
 #Viewing the summary statistics and dimension for the NY dataset
 
@@ -123,55 +123,84 @@ qplot(x = Trip.Duration, data = subset(chi_f, Birth.Year > 1949 & Birth.Year < 1
 
 
 
-# Your solution code goes here
-#function, loop
-# end_stat_uniq <- unique(wash$End.Station)
+#function that returns top ten most visited end stations in Washington, Chicago, and New York
 
-
-end_stat_sum <- summary(wash$End.Station)
-
-# end_stat_sum <- data.frame(Station=c(summary(wash$End.Station)))
-
-x = summary(wash$End.Station)
-
-# head(end_stat_sum)
-
-# last_four <- 4
-
-# end_stat_sum$Count = substr(x, nchar(x) - last_four + 1, nchar(x))
-
-
-# dim(end_stat_sum)
-
+#loading libraries
+library(ggplot2)
+library("stringr")
 library(dplyr)
 
-# head(end_stat_sum)
-
-# substr(end_stat_sum$Station, 1, 4)
-
-# library(stringr)
-# n <- c(end_stat_sum$Station)
-# str_sub(n,1,nchar(n)-100)
-
-# head(end_stat_sum)
-
-
-#function that returns most visited end stations
-popular_stations <- function(df) { 
+#function definition
+popular_stations_wash <- function(df) { 
     
-    df <- transform(df, freq= ave(seq(nrow(df)), End.Station, FUN=length))      
-    
+    #code body of objects and variables
+    df <- transform(df, freq= ave(seq(nrow(df)), End.Station, FUN=length))    
     df_new = data.frame(df$End.Station, df$freq)
-
-    df_grp <- df_new %>% group_by(df$End.Station)     
-    
+    df_grp <- df_new %>% group_by(df$End.Station)    
     df_grp = df_grp[order(-df_grp$df.freq), ]
-
-    df_top_ten = unique(df_grp, decreasing = TRUE)
-    
-    head(df_top_ten, 10)
+    df_top_ten = unique(df_grp, decreasing = TRUE)    
+    df_final <- head(df_top_ten, 10)
+     
+    #barplot      
+    ggp_final <- ggplot(df_final, aes(x = reorder(df_final$df.End.Station, +df_final$df.freq), y = df_final$df.freq)) +
+      scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +
+      ggtitle("Top Ten Most Visited End Stations in Washington") +
+      theme(axis.text = element_text(size = 6)) +
+      theme(axis.title = element_text(size = 12)) +
+      theme(plot.title = element_text(size = 15)) +        
+      labs(x = "Bikeshare End Stations", y = "Frequency of Visits") +                        
+      geom_bar(stat = "identity", fill = "dark red", width = 0.50)
+      ggp_final + coord_flip()
 }
+                      
+                       
+#function definition
+popular_stations_ny <- function(df) { 
+    
+    #code body of objects and variables
+    df <- transform(df, freq= ave(seq(nrow(df)), End.Station, FUN=length))    
+    df_new = data.frame(df$End.Station, df$freq)
+    df_grp <- df_new %>% group_by(df$End.Station)    
+    df_grp = df_grp[order(-df_grp$df.freq), ]
+    df_top_ten = unique(df_grp, decreasing = TRUE)    
+    df_final <- head(df_top_ten, 10)
+     
+    #barplot     
+    ggp_final <- ggplot(df_final, aes(x = reorder(df_final$df.End.Station, +df_final$df.freq), y = df_final$df.freq)) +
+      ggtitle("Top Ten Most Visited End Stations in New York") +
+      theme(axis.title = element_text(size = 12)) +
+      theme(plot.title = element_text(size = 15)) +  
+      labs(x = "Bikeshare End Stations", y = "Frequency of Visits") +    
+      geom_bar(stat = "identity", fill = "dark blue", width = 0.50)
+      ggp_final + coord_flip()
+}
+                       
+#function definition                       
+popular_stations_chi <- function(df) { 
+    
+    #code body of objects and variables
+    df <- transform(df, freq= ave(seq(nrow(df)), End.Station, FUN=length))    
+    df_new = data.frame(df$End.Station, df$freq)
+    df_grp <- df_new %>% group_by(df$End.Station)    
+    df_grp = df_grp[order(-df_grp$df.freq), ]
+    df_top_ten = unique(df_grp, decreasing = TRUE)    
+    df_final <- head(df_top_ten, 10)
+     
+    #barplot    
+    ggp_final <- ggplot(df_final, aes(x = reorder(df_final$df.End.Station, +df_final$df.freq), y = df_final$df.freq)) +
+      ggtitle("Top Ten Most Visited End Stations in Chicago") +
+      theme(axis.title = element_text(size = 12)) +
+      theme(plot.title = element_text(size = 15)) +  
+      labs(x = "Bikeshare End Stations", y = "Frequency of Visits") +
+      geom_bar(stat = "identity", fill = "dark green", width = 0.50)
+      ggp_final + coord_flip()
+}
+                    
 
-popular_stations(ny) 
+#calling the functions
+
+popular_stations_wash(wash)
+popular_stations_chi(chi)
+popular_stations_ny(ny)    
 
 system('python -m nbconvert Explore_bikeshare_data.ipynb')
