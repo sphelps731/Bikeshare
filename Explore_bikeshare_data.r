@@ -5,13 +5,12 @@ ny = read.csv('new_york_city.csv')
 wash = read.csv('washington.csv')
 chi = read.csv('chicago.csv')
 
-# Reviewing the top five rows for NY and Chicago
+# Reviewing the top five rows for the three cities
 head(ny, 5)
 head(chi, 5)
-
+head(wash)
 
 #Viewing the summary statistics and dimension for the NY dataset
-
 summary(ny)
 dim(ny)
 
@@ -19,10 +18,15 @@ dim(ny)
 summary(chi)
 dim(chi)
 
-# The column names in the two datasets
+#Viewing the summary statistics and dimension for the Washington dataset
+summary(wash)
+dim(wash)
+
+# The column names in the each dataset
 
 names(ny) 
 names(chi)
+names(wash)
 
 # Loading the ggplot library containing our plot functions
 
@@ -83,38 +87,26 @@ qplot(x = Trip.Duration, data = wash,
     scale_x_continuous(breaks = seq(0, 2500, 500), lim = c(0, 2500)) 
     
 
-names(chi)
+head(chi, 5)
 
-head(chi)
-
+dim(chi)
 summary(chi)
 
+#loading ggplot2 and the dplyr libraries
+library(dplyr)
 library('ggplot2')
 
-
-library(dplyr)
+#filter function
 filter(chi, Birth.Year > 1950)
 
 
 # Saving the filtered dataset to a new dataframe.
 
-chi.to_csv('chi_filtered.csv')
 write.csv(chi, 'chi_filtered.csv', row.names=FALSE)
 chi_f = read.csv('chi_filtered.csv')
 head(chi_f)
 
-
-# qplot(x = Trip.Duration, data = subset(chi_f, Birth.Year > 1949 & Birth.Year < 1999),
-#     xlab = "Trip Duration", ylab = "Number of Riders",    
-#     color = I('black'), fill = I('#099002'), binwidth = 40) +
-#     scale_x_continuous(lim = c(0, 1000), breaks = seq(0, 1000, 1250)) +
-#     facet_wrap(~Birth.Year)
-
-# head(chi_f)
-names(chi_f)
-# summary(chi_f)
-dim(chi_f)
-
+#the qplot function
 qplot(x = Trip.Duration, data = subset(chi_f, Birth.Year > 1949 & Birth.Year < 1999),
     xlab = "Trip Duration", ylab = "Number of Riders",    
     color = I('black'), fill = I('#099002'), binwidth = 40) +
@@ -122,6 +114,26 @@ qplot(x = Trip.Duration, data = subset(chi_f, Birth.Year > 1949 & Birth.Year < 1
     facet_wrap(~Birth.Year)
 
 
+
+#loading ggplot2 and the dplyr libraries
+library(dplyr)
+library('ggplot2')
+
+#filter function
+filter(ny, Birth.Year > 1950)
+
+# Saving the filtered dataset to a new dataframe.
+
+write.csv(ny, 'ny_filtered.csv', row.names=FALSE)
+ny_f = read.csv('ny_filtered.csv')
+head(ny_f)
+
+#the qplot function
+qplot(x = Trip.Duration, data = subset(ny_f, Birth.Year > 1949 & Birth.Year < 1999),
+    xlab = "Trip Duration", ylab = "Number of Riders",    
+    color = I('black'), fill = I('#099002'), binwidth = 40) +
+    scale_x_continuous(lim = c(0, 1000), breaks = seq(0, 1000, 1250)) +
+    facet_wrap(~Birth.Year)
 
 #function that returns top ten most visited end stations in Washington, Chicago, and New York
 
@@ -152,8 +164,10 @@ popular_stations_wash <- function(df) {
       geom_bar(stat = "identity", fill = "dark red", width = 0.50)
       ggp_final + coord_flip()
 }
-                      
-                       
+#Washington data end station y-axis text (street names) were long so I used a string wrap function,
+#from the stringr library that modifies the text to multiple lines.
+#https://statisticsglobe.com/r-str_wrap-function-stringr-package                       
+
 #function definition
 popular_stations_ny <- function(df) { 
     
@@ -198,7 +212,6 @@ popular_stations_chi <- function(df) {
                     
 
 #calling the functions
-
 popular_stations_wash(wash)
 popular_stations_chi(chi)
 popular_stations_ny(ny)    
